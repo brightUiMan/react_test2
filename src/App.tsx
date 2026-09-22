@@ -4,7 +4,9 @@ function App() {
 
   return (
     <>
-      <div>테스트 출력</div>
+      <div className="w-full h-screen  flex flex-col items-center justify-center">
+        테스트
+      </div>
     </>
   )
 }
