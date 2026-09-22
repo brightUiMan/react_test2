@@ -8,7 +8,7 @@ const ThreeCanvas = () => {
                 <boxGeometry args={[1, 1, 1]} />
                 <meshStandardMaterial color="red"/>
             </mesh>
-
+        
          </Canvas>
     </>
 }
