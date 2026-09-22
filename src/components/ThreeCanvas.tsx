@@ -1,4 +1,4 @@
-import { Canvas, useThree } from "@react-three/fiber";
+import { Canvas} from "@react-three/fiber";
 const ThreeCanvas = () => {
     return <>
         <Canvas frameloop={"always" } camera={{ position: [0, 0, 0], rotation:[0, 0, 0],  fov: 60, near: 0.1, far: 1000 }} 
