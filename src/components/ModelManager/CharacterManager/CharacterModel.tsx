@@ -55,6 +55,7 @@ const CharacterModel = ({ target }: CharacterModelProps) => {
     const KeyUp = (e:KeyboardEvent) => {
       if(shiftState.current){
         shiftState.current = false;
+        console.log(e)
       }
     }
 
@@ -84,7 +85,7 @@ const CharacterModel = ({ target }: CharacterModelProps) => {
 
   useFrame((state, delta) => {
       
-
+    console.log(state)
 
     if ( !character.current || !collider.current || !controller.current) return;
     const current = character.current.translation();
