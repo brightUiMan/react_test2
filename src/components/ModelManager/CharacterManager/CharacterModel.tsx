@@ -17,8 +17,7 @@ const CharacterModel = ({ target }: CharacterModelProps) => {
   const shiftState = useRef<boolean>(false)
   const charAniState = useRef<string>("stand2");
   const {camera} = useThree()
-  const cameraTarget = useRef(new THREE.Vector3());
-  const cameraPosition = useRef(new THREE.Vector3());
+
   const orbit = useRef<any>(null!)
 const lastCharacterPosition = useRef(new THREE.Vector3());
 const cameraInitialized = useRef(false);
@@ -56,7 +55,7 @@ const cameraInitialized = useRef(false);
     const KeyUp = (e:KeyboardEvent) => {
       if(shiftState.current){
         shiftState.current = false;
-       
+       console.log(e)
       }
     }
 
@@ -86,7 +85,7 @@ const cameraInitialized = useRef(false);
 
   useFrame((state, delta) => {
       
-    
+    console.log(state)
 
     if ( !character.current || !collider.current || !controller.current || !orbit.current) return;
     const current = character.current.translation();
