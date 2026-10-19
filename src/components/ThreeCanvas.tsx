@@ -2,6 +2,7 @@ import { Canvas} from "@react-three/fiber";
 import Light from "./Light";
 import ModelManager from "./ModelManager/ModelManager";
 import { Physics } from "@react-three/rapier";
+// import { OrbitControls } from "@react-three/drei";
 
 const ThreeCanvas = () => {
     return <>
@@ -11,7 +12,7 @@ const ThreeCanvas = () => {
                 <boxGeometry args={[1, 1, 1]} />
                 <meshStandardMaterial color="red"/>
             </mesh> */}
-            {/* <OrbitControls rotateSpeed={1}/> */}
+          
             <Physics debug>
                 <ModelManager />
             </Physics>

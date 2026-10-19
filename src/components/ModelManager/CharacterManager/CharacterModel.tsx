@@ -1,4 +1,4 @@
-import { useAnimations, useGLTF } from "@react-three/drei";
+import { OrbitControls, useAnimations, useGLTF } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { CapsuleCollider, RapierRigidBody, RigidBody, useRapier} from "@react-three/rapier";
 import { useCallback, useEffect, useRef } from "react";
@@ -19,8 +19,9 @@ const CharacterModel = ({ target }: CharacterModelProps) => {
   const {camera} = useThree()
   const cameraTarget = useRef(new THREE.Vector3());
   const cameraPosition = useRef(new THREE.Vector3());
-
-
+  const orbit = useRef<any>(null!)
+const lastCharacterPosition = useRef(new THREE.Vector3());
+const cameraInitialized = useRef(false);
   const changeAnim = useCallback((next: string) => {
     if (charAniState.current === next && actions[next]?.isRunning() ) return
    
@@ -55,7 +56,7 @@ const CharacterModel = ({ target }: CharacterModelProps) => {
     const KeyUp = (e:KeyboardEvent) => {
       if(shiftState.current){
         shiftState.current = false;
-        console.log(e)
+       
       }
     }
 
@@ -85,9 +86,9 @@ const CharacterModel = ({ target }: CharacterModelProps) => {
 
   useFrame((state, delta) => {
       
-    console.log(state)
+    
 
-    if ( !character.current || !collider.current || !controller.current) return;
+    if ( !character.current || !collider.current || !controller.current || !orbit.current) return;
     const current = character.current.translation();
 
     // 1. 이동 방향 계산
@@ -173,37 +174,54 @@ const CharacterModel = ({ target }: CharacterModelProps) => {
       verticalVelocity.current = 0;
     }
 
-    // 8. 3인칭 카메라 추적
-const cameraOffset = new THREE.Vector3(0, 3, -6);
 
-// 캐릭터의 회전 방향을 기준으로 카메라 위치 계산
-// cameraOffset.applyAxisAngle(
-//   new THREE.Vector3(0, 1, 0),
-//   scene.rotation.y
-// );
+    // 8. OrbitControls 카메라 추적
 
-cameraPosition.current.set(
-  current.x + cameraOffset.x,
-  current.y + cameraOffset.y,
-  current.z + cameraOffset.z
-);
+    // 최초 1회 카메라 초기 위치 설정
+    if (!cameraInitialized.current) {
+      camera.position.set(
+        current.x,
+        current.y + 3,
+        current.z - 6
+      );
 
+      orbit.current.target.set(
+        current.x,
+        current.y + 1.5,
+        current.z
+      );
 
-// camera.position.copy(cameraPosition.current)
-// 카메라가 부드럽게 따라오도록 보간
-camera.position.lerp(
-  cameraPosition.current,
-  1 - Math.exp(-5 * delta)
-);
+      lastCharacterPosition.current.set(
+        current.x,
+        current.y,
+        current.z
+      );
 
-// 캐릭터보다 약간 위쪽을 바라보도록 설정
-cameraTarget.current.set(
-  current.x,
-  current.y + 1.5,
-  current.z
-);
+      orbit.current.update();
+      cameraInitialized.current = true;
+    }
 
-camera.lookAt(cameraTarget.current);
+    // 캐릭터가 이동한 거리 계산
+    const dx = current.x - lastCharacterPosition.current.x;
+    const dy = current.y - lastCharacterPosition.current.y;
+    const dz = current.z - lastCharacterPosition.current.z;
+
+    // 카메라와 회전 중심을 같은 거리만큼 이동
+    camera.position.x += dx;
+    camera.position.y += dy;
+    camera.position.z += dz;
+
+    orbit.current.target.x += dx;
+    orbit.current.target.y += dy;
+    orbit.current.target.z += dz;
+
+    // 다음 프레임을 위한 위치 저장
+    lastCharacterPosition.current.set(
+      current.x,
+      current.y,
+      current.z
+    );
+
 
   });
 
@@ -226,7 +244,7 @@ camera.lookAt(cameraTarget.current);
       />
      
     </RigidBody>
-    
+    <OrbitControls ref={orbit}/>
     </>
     
 
