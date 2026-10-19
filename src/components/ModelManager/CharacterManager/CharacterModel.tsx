@@ -175,7 +175,7 @@ const cameraInitialized = useRef(false);
     }
 
 
-    // 8. OrbitControls 카메라 추적
+    // 8. OrbitControls 카메라 추
 
     // 최초 1회 카메라 초기 위치 설정
     if (!cameraInitialized.current) {
