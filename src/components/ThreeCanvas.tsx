@@ -1,7 +1,6 @@
 import { Canvas} from "@react-three/fiber";
 import Light from "./Light";
 import ModelManager from "./ModelManager/ModelManager";
-import { OrbitControls } from "@react-three/drei";
 import { Physics } from "@react-three/rapier";
 
 const ThreeCanvas = () => {

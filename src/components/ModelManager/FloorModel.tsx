@@ -1,7 +1,7 @@
 import { useGLTF } from '@react-three/drei'
 import type { ThreeEvent } from '@react-three/fiber'
 import { RigidBody } from '@react-three/rapier';
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import * as THREE from 'three'
 
 interface FloorProps {
