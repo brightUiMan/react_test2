@@ -13,7 +13,7 @@ const ThreeCanvas = () => {
                 <meshStandardMaterial color="red"/>
             </mesh> */}
           
-            <Physics debug>
+            <Physics >
                 <ModelManager />
             </Physics>
             
